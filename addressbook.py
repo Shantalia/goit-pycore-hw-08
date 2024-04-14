@@ -44,7 +44,7 @@ class Record:
         self.birthday = Birthday(birthday)
 
     def __str__(self):
-        return f"------------\nContact name: {self.name.value}\nPhone: {self.phone.value}\nBirthday: {self.birthday.value}"
+        return f"------------\nContact name: {self.name.value}\nPhone: {self.phone.value}\nBirthday: {self.birthday}"
 
 class AddressBook(UserDict):
     def add_record(self, obj_rec): 
@@ -61,20 +61,21 @@ class AddressBook(UserDict):
             
     def get_upcoming_birthdays(self):
         today = datetime.today().date()
-        congratulations = []
         delta = today + timedelta(days=7)
         future_year = today + timedelta(days=365)
         for user in self.data:
-            birth_day = datetime.strptime(self.data[user].birthday.value, "%d.%m.%Y").date()
-            if ((birth_day.day < today.day) and (birth_day.month <= today.month)) or \
-                ((birth_day.day > today.day) and (birth_day.month < today.month)):
-                congratulation_date = datetime(year = future_year.year, month = birth_day.month, day = birth_day.day)
+            if self.data[user].birthday:
+                birth_day = datetime.strptime(self.data[user].birthday.value, "%d.%m.%Y").date()
+                if ((birth_day.day < today.day) and (birth_day.month <= today.month)) or \
+                    ((birth_day.day > today.day) and (birth_day.month < today.month)):
+                    congratulation_date = datetime(year = future_year.year, month = birth_day.month, day = birth_day.day)
+                else:
+                    congratulation_date = datetime(year = today.year, month = birth_day.month, day = birth_day.day)
+                    day_of_week = congratulation_date.weekday()
+                    if (congratulation_date.date() <= delta):
+                        if day_of_week >= 5:
+                            congratulation_date = datetime(year = today.year, month = birth_day.month, day = birth_day.day+(7-day_of_week))
+                        print(f'{user} : {str(congratulation_date.date())}')
             else:
-                congratulation_date = datetime(year = today.year, month = birth_day.month, day = birth_day.day)
-                day_of_week = congratulation_date.weekday()
-                if (congratulation_date.date() <= delta):
-                    if day_of_week >= 5:
-                        congratulation_date = datetime(year = today.year, month = birth_day.month, day = birth_day.day+(7-day_of_week))
-                    #congratulations.append({user : str(congratulation_date.date())})
-                    print(f'{user} : {str(congratulation_date.date())}')
+                continue
         return "-----------------"    

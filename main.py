@@ -4,7 +4,6 @@ from addressbook import *
 def main():
     print("Welcome to the assistant bot!")
     book = load_data()
-
     while True:
         user_input = input("Enter a command: ")
         try:
@@ -23,19 +22,19 @@ def main():
         elif command == "hello":
             print("How can I help you?")
         elif command == "add":
-            print(add_contact(args))
+            print(add_contact(args, book))
         elif command == "change":
-            print(change_contact(args))
+            print(change_contact(args, book))
         elif command == "add-birthday":
-            print(add_birth(args))
+            print(add_birth(args, book))
         elif command == "phone":
-            print(show_phone(args))
+            print(show_phone(args, book))
         elif command == "birthday":
-            print(show_birthday(args))
+            print(show_birthday(args, book))
         elif command == "all":
-            print(show_all())
+            print(show_all(book))
         elif command == "congrats":
-            print(congrats())
+            print(congrats(book))
         else:
             print("Invalid command.")
 
