@@ -38,7 +38,7 @@ class Record:
         self.phone = Phone(phone)
 
     def edit_phone(self, new_phone): 
-        self.phone.value = new_phone
+        self.phone.value = Phone(new_phone)
             
     def add_birthday(self, birthday):
         self.birthday = Birthday(birthday)
